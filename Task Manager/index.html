@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="script.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Task Manager</title>
+</head>
+<body>
+    <header class="header">
+        <center>
+            <h1 class="h1">Task Manager</h1>
+        </center>
+        <nav>
+            <ul>
+                <li><a href="index.html">Task Manager</a></li>     
+                <li><a href="calendar.html">Calendar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="task-container">
+        <input type="text" id="taskInput" placeholder="Add a new task" class="larger-input">
+        <button onclick="addTask()" class="add-task-button">Add Task</button>
+    </div>
+
+    <ul id="taskList" class="taskList" ></ul>
+
+    <!-- <p id="taskParagraph" class="task-paragraph"></p> -->
+
+    <script src="script.js"></script>
+</body>
+</html>
