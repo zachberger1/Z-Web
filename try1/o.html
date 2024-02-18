@@ -1,0 +1,351 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cody Task Manager</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #4EFFDF, #48BBDE, #F47EC6);
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #3c3535;
+      color: #fff;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      text-align: center;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #app {
+      max-width: 800px;
+      margin: 160px auto;
+      /* Increased margin to make space for the fixed header */
+      background-color: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .task {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #333;
+    }
+
+    .task:hover {
+      cursor: default;
+    }
+
+    .task.completed {
+      background-color: #555;
+      color: #777;
+      text-decoration: line-through;
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      background-color: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .close-btn,
+    .delete-btn,
+    .details-btn,
+    .add-btn {
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .details-btn {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .add-btn {
+      background-color: #17a2b8;
+      color: #fff;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <center>
+      <h1 class="h1">Task Manager</h1>
+    </center>
+    <nav>
+      <ul>
+        <li><a href="index.html">Task Manager</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="app">
+    <h1>Cody Task Manager</h1>
+    <div>
+      <button class="add-btn" onclick="openModal()">Add Task</button>
+    </div>
+    <div id="taskList"></div>
+  </div>
+
+  <div class="backdrop" id="modalBackdrop" onclick="closeModals()">
+    <div class="modal" id="taskModal">
+      <button class="close-btn" onclick="closeTaskModal()">Close</button>
+      <h2>Task Details</h2>
+      <p id="taskModalText"></p>
+      <p id="taskLocationText"></p>
+      <p id="taskDateTimeText"></p>
+      <p id="taskTransportationText"></p>
+      <p id="taskPickupTimeText"></p>
+    </div>
+  </div>
+
+<!-- Add Task-specific elements -->
+<div class="backdrop" id="addTaskBackdrop">
+    <div class="modal" id="addTaskModal">
+        <button class="close-btn" onclick="closeModals()">Close</button>
+        <h2>Add Task</h2>
+        <div class="input-group">
+            <label for="taskInput">Task:</label>
+            <input type="text" id="taskInput" />
+        </div>
+        <div class="input-group">
+            <label for="taskLocationInput">Location:</label>
+            <input type="text" id="taskLocationInput" />
+        </div>
+        <div class="input-group">
+            <label for="taskDateTimeInput">Date and Time:</label>
+            <input type="datetime-local" id="taskDateTimeInput" />
+        </div>
+        <div class="input-group">
+            <label for="taskTransportationInput">Transportation:</label>
+            <input type="text" id="taskTransportationInput" />
+        </div>
+        <div class="input-group">
+            <label for="taskPickupTimeInput">Pickup Time:</label>
+            <input type="time" id="taskPickupTimeInput" />
+        </div>
+        <button class="add-btn" onclick="addTask()">Add</button>
+    </div>
+</div>
+
+  <script>
+       const taskList = document.getElementById('taskList');
+    const taskInput = document.getElementById('taskInput');
+    const taskLocationInput = document.getElementById('taskLocationInput');
+    const taskDateTimeInput = document.getElementById('taskDateTimeInput');
+    const taskTransportationInput = document.getElementById('taskTransportationInput');
+    const taskPickupTimeInput = document.getElementById('taskPickupTimeInput');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const addTaskBackdrop = document.getElementById('addTaskBackdrop');
+    const taskModal = document.getElementById('taskModal');
+    const taskModalText = document.getElementById('taskModalText');
+    const taskLocationText = document.getElementById('taskLocationText');
+    const taskDateTimeText = document.getElementById('taskDateTimeText');
+    const taskTransportationText = document.getElementById('taskTransportationText');
+    const taskPickupTimeText = document.getElementById('taskPickupTimeText');
+
+    function openModal() {
+      addTaskBackdrop.style.display = 'flex';
+    }
+
+    function closeModals() {
+      addTaskBackdrop.style.display = 'none';
+      modalBackdrop.style.display = 'none';
+      taskInput.value = '';
+      taskLocationInput.value = '';
+      taskDateTimeInput.value = '';
+      taskTransportationInput.value = '';
+      taskPickupTimeInput.value = '';
+    }
+
+    function closeAddTaskModal() {
+      addTaskBackdrop.style.display = 'none';
+      taskInput.value = '';
+      taskLocationInput.value = '';
+      taskDateTimeInput.value = '';
+      taskTransportationInput.value = '';
+      taskPickupTimeInput.value = '';
+    }
+
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      const taskLocation = taskLocationInput.value.trim();
+      const taskDateTime = taskDateTimeInput.value;
+      const taskTransportation = taskTransportationInput.value.trim();
+      const taskPickupTime = taskPickupTimeInput.value;
+
+      if (taskText !== '') {
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task';
+        taskElement.innerHTML = `
+          <span>${taskText}</span>
+          <button class="delete-btn" onclick="deleteTask(event)">Delete</button>
+          <button class="details-btn" onclick="openTaskModal(event, '${taskText}', '${taskLocation}', '${taskDateTime}', '${taskTransportation}', '${taskPickupTime}')">Details</button>
+        `;
+        taskList.appendChild(taskElement);
+
+        saveTaskToLocalStorage({
+          text: taskText,
+          location: taskLocation,
+          dateTime: taskDateTime,
+          transportation: taskTransportation,
+          pickupTime: taskPickupTime
+        });
+
+        closeAddTaskModal();
+      }
+    }
+
+    function openTaskModal(event, taskText, taskLocation, taskDateTime, taskTransportation, taskPickupTime) {
+      event.stopPropagation();
+
+      taskModalText.innerText = `Task: ${taskText}`;
+      taskLocationText.innerText = `Location: ${taskLocation}`;
+      taskDateTimeText.innerText = `Date and Time: ${taskDateTime}`;
+      taskTransportationText.innerText = `Transportation: ${taskTransportation}`;
+      taskPickupTimeText.innerText = `Pickup Time: ${taskPickupTime}`;
+      modalBackdrop.style.display = 'flex';
+    }
+
+    function closeTaskModal() {
+      modalBackdrop.style.display = 'none';
+    }
+
+    function deleteTask(event) {
+      event.stopPropagation();
+
+      const taskElement = event.target.closest('.task');
+      const taskText = taskElement.querySelector('span').innerText;
+
+      taskElement.remove();
+
+      removeTaskFromLocalStorage(taskText);
+    }
+
+    function saveTaskToLocalStorage(task) {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function removeTaskFromLocalStorage(taskText) {
+      let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks = tasks.filter(task => task.text !== taskText);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function loadTasksFromLocalStorage() {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+      for (const task of tasks) {
+        const taskElement = document.createElement('div');
+        taskElement.className = 'task';
+        taskElement.innerHTML = `
+          <span>${task.text}</span>
+          <button class="delete-btn" onclick="deleteTask(event)">Delete</button>
+          <button class="details-btn" onclick="openTaskModal(event, '${task.text}', '${task.location}', '${task.dateTime}', '${task.transportation}', '${task.pickupTime}')">Details</button>
+        `;
+        taskList.appendChild(taskElement);
+      }
+    }
+
+    loadTasksFromLocalStorage();
+  </script>
+
+</body>
+</html>

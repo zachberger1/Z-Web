@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cody Task Manager</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #4EFFDF, #48BBDE, #F47EC6);
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      background-color: #3c3535;
+      color: #fff;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      padding-top: 20px;
+      padding-bottom: 20px;
+      text-align: center;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    #app {
+      max-width: 800px;
+      margin: 160px auto;
+      /* Increased margin to make space for the fixed header */
+      background-color: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .task {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #333;
+    }
+
+    .task:hover {
+      cursor: default;
+    }
+
+    .task.completed {
+      background-color: #555;
+      color: #777;
+      text-decoration: line-through;
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal {
+      background-color: #2c2c2c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .close-btn,
+    .delete-btn,
+    .details-btn,
+    .add-btn,
+    .category-btn {
+      cursor: pointer;
+      margin-top: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .close-btn {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: #fff;
+    }
+
+    .details-btn {
+      background-color: #28a745;
+      color: #fff;
+    }
+
+    .add-btn {
+      background-color: #17a2b8;
+      color: #fff;
+    }
+
+    .category-btn {
+      background-color: #6c757d;
+      color: #fff;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+
+    /* Add new category modals CSS */
+    .category-modal {
+      display: none;
+    }
+
+    .category-modal .input-group input[type="date"] {
+      /* Adjust styling for date input if needed */
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+
+    .category-modal .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #fff;
+    }
+
+    .category-modal .input-group input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      background-color: #444;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <center>
+      <h1 class="h1">Task Manager</h1>
+    </center>
+    <nav>
+      <ul>
+        <li><a href="index.html">Task Manager</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="app">
+    <h1>Cody Task Manager</h1>
+    <div>
+      <button class="add-btn" onclick="openCategoryModal()">Add Task</button>
+    </div>
+    <div id="taskList"></div>
+  </div>
+
+  <div class="backdrop" id="modalBackdrop" onclick="closeModals()">
+    <div class="modal" id="taskModal">
+      <button class="close-btn" onclick="closeTaskModal()">Close</button>
+      <h2>Task Details</h2>
+      <p id="taskModalText"></p>
+      <p id="taskLocationText"></p>
+      <p id="taskDateTimeText"></p>
+      <p id="taskTransportationText"></p>
+      <p id="taskPickupTimeText"></p>
+    </div>
+  </div>
+
+  <!-- Category selection modal -->
+  <div class="backdrop" id="categoryModalBackdrop">
+    <div class="modal" id="categoryModal">
+      <button class="close-btn" onclick="closeCategoryModal()">Close</button>
+      <h2>Select Category</h2>
+      <button class="category-btn" onclick="openCategorySpecificModal('Chore')">Chore</button>
+      <button class="category-btn" onclick="openCategorySpecificModal('Event')">Event</button>
+      <button class="category-btn" onclick="openCategorySpecificModal('Homework')">Homework</button>
+    </div>
+  </div>
+
+  <!-- Category-specific modals -->
+  <div class="backdrop category-modal" id="choreModal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeCategoryModal('choreModal')">Close</button>
+      <h2>Chore Details</h2>
+      <div class="input-group">
+        <label for="choreDescriptionInput">Chore Description:</label>
+        <input type="text" id="choreDescriptionInput" />
+      </div>
+      <div class="input-group">
+        <label for="choreAssignedToInput">Assigned To:</label>
+        <input type="text" id="choreAssignedToInput" />
+      </div>
+      <div class="input-group">
+        <label for="choreDueDateInput">Due Date:</label>
+        <input type="date" id="choreDueDateInput" />
+      </div>
+      <button class="add-btn" onclick="addChore()">Add Chore</button>
+    </div>
+  </div>
+
+  <div class="backdrop category-modal" id="eventModal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeCategoryModal('eventModal')">Close</button>
+      <h2>Event Details</h2>
+      <div class="input-group">
+        <label for="eventInput">Event:</label>
+        <input type="text" id="eventInput" />
+      </div>
+      <div class="input-group">
+        <label for="eventLocationInput">Location:</label>
+        <input type="text" id="eventLocationInput" />
+      </div>
+      <div class="input-group">
+        <label for="eventDateTimeInput">Date and Time:</label>
+        <input type="datetime-local" id="eventDateTimeInput" />
+      </div>
+      <div class="input-group">
+        <label for="eventTransportationInput">Transportation:</label>
+        <input type="text" id="eventTransportationInput" />
+      </div>
+      <div class="input-group">
+        <label for="eventPickupTimeInput">Pickup Time:</label>
+        <input type="time" id="eventPickupTimeInput" />
+      </div>
+      <button class="add-btn" onclick="addEvent()">Add Event</button>
+    </div>
+  </div>
+
+  <div class="backdrop category-modal" id="homeworkModal">
+    <div class="modal">
+      <button class="close-btn" onclick="closeCategoryModal('homeworkModal')">Close</button>
+      <h2>Homework Details</h2>
+      <div class="input-group">
+        <label for="homeworkSubjectInput">Subject:</label>
+        <input type="text" id="homeworkSubjectInput" />
+      </div>
+      <div class="input-group">
+        <label for="homeworkTeacherInput">Teacher:</label>
+        <input type="text" id="homeworkTeacherInput" />
+      </div>
+      <div class="input-group">
+        <label for="homeworkBookInput">Book:</label>
+        <input type="text" id="homeworkBookInput" />
+      </div>
+      <div class="input-group">
+        <label for="homeworkDueDateInput">Due Date:</label>
+        <input type="date" id="homeworkDueDateInput" />
+      </div>
+      <button class="add-btn" onclick="addHomework()">Add Homework</button>
+    </div>
+  </div>
+
+  <script>
+    const categoryModalBackdrop = document.getElementById('categoryModalBackdrop');
+    const categoryModal = document.getElementById('categoryModal');
+    const choreModal = document.getElementById('choreModal');
+    const eventModal = document.getElementById('eventModal');
+    const homeworkModal = document.getElementById('homeworkModal');
+
+    function openCategoryModal() {
+      categoryModalBackdrop.style.display = 'flex';
+    }
+
+    function closeCategoryModal(modalId) {
+      categoryModalBackdrop.style.display = 'none';
+      closeCategorySpecificModals();
+    }
+
+    function openChoreModal() {
+      closeCategoryModal('choreModal');
+      choreModal.style.display = 'flex';
+    }
+
+    function openEventModal() {
+      closeCategoryModal('eventModal');
+      eventModal.style.display = 'flex';
+    }
+
+    function openHomeworkModal() {
+      closeCategoryModal('homeworkModal');
+      homeworkModal.style.display = 'flex';
+    }
+
+    function closeCategorySpecificModals() {
+      choreModal.style.display = 'none';
+      eventModal.style.display = 'none';
+      homeworkModal.style.display = 'none';
+    }
+
+    function closeModals() {
+      categoryModalBackdrop.style.display = 'none';
+      closeCategorySpecificModals();
+    }
+
+    // Ensure the backdrop closes the modals
+    
+    // Update button event listeners to ensure proper function calls
+    document.getElementById('addTaskBtn').addEventListener('click', openCategoryModal);
+    document.getElementById('choreCategoryBtn').addEventListener('click', openChoreModal);
+    document.getElementById('eventCategoryBtn').addEventListener('click', openEventModal);
+    document.getElementById('homeworkCategoryBtn').addEventListener('click', openHomeworkModal);
+  </script>
+
+</body>
+
+</html>
