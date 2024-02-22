@@ -5,6 +5,7 @@ const taskDateTimeInput = document.getElementById('taskDateTimeInput');
 const taskTransportationInput = document.getElementById('taskTransportationInput');
 const taskPickupTimeInput = document.getElementById('taskPickupTimeInput');
 const taskAssignedToInput = document.getElementById('taskAssignedToInput'); // New input field
+const taskNotsInput = document.getElementById('taskNotsInput'); // New input field
 const modalBackdrop = document.getElementById('modalBackdrop');
 const addTaskBackdrop = document.getElementById('addTaskBackdrop');
 const taskModal = document.getElementById('taskModal');
@@ -27,7 +28,8 @@ function closeModals() {
   taskDateTimeInput.value = '';
   taskTransportationInput.value = '';
   taskPickupTimeInput.value = '';
-  taskAssignedToInput.value = ''; // Clear assigned to input
+  taskAssignedToInput.value = '';
+  taskNotsInput.value = ''; // Clear notes input
 }
 
 function closeAddTaskModal() {
@@ -37,7 +39,8 @@ function closeAddTaskModal() {
   taskDateTimeInput.value = '';
   taskTransportationInput.value = '';
   taskPickupTimeInput.value = '';
-  taskAssignedToInput.value = ''; // Clear assigned to input
+  taskAssignedToInput.value = '';
+  taskNotsInput.value = ''; // Clear notes input
 }
 
 function addTask() {
@@ -46,15 +49,15 @@ function addTask() {
   const taskDateTime = taskDateTimeInput.value;
   const taskTransportation = taskTransportationInput.value.trim();
   const taskPickupTime = taskPickupTimeInput.value;
-  const taskAssignedTo = taskAssignedToInput.value.trim(); // Get assigned to value
-
+  const taskAssignedTo = taskAssignedToInput.value.trim();
+  const taskNots = taskNotsInput.value.trim(); // Get notes value
   if (taskText !== '') {
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
     taskElement.innerHTML = `
       <span>${taskText}</span>
       <button class="delete-btn" onclick="deleteTask(event)">Delete</button>
-      <button class="details-btn" onclick="openTaskModal(event, '${taskText}', '${taskLocation}', '${taskDateTime}', '${taskTransportation}', '${taskPickupTime}', '${taskAssignedTo}')">Details</button>
+      <button class="details-btn" onclick="openTaskModal(event, '${taskText}', '${taskLocation}', '${taskDateTime}', '${taskTransportation}', '${taskPickupTime}', '${taskAssignedTo}', '${taskNots}')">Details</button>
     `;
     taskList.appendChild(taskElement);
 
@@ -64,14 +67,15 @@ function addTask() {
       dateTime: taskDateTime,
       transportation: taskTransportation,
       pickupTime: taskPickupTime,
-      assignedTo: taskAssignedTo // Save assigned to value to local storage
+      assignedTo: taskAssignedTo,
+      notes: taskNots // Save notes value to local storage
     });
 
     closeAddTaskModal();
   }
 }
 
-function openTaskModal(event, taskText, taskLocation, taskDateTime, taskTransportation, taskPickupTime, taskAssignedTo) {
+function openTaskModal(event, taskText, taskLocation, taskDateTime, taskTransportation, taskPickupTime, taskAssignedTo, taskNots) {
   event.stopPropagation();
 
   taskModalText.innerText = `Task: ${taskText}`;
@@ -79,7 +83,8 @@ function openTaskModal(event, taskText, taskLocation, taskDateTime, taskTranspor
   taskDateTimeText.innerText = `Date and Time: ${taskDateTime}`;
   taskTransportationText.innerText = `Transportation: ${taskTransportation}`;
   taskPickupTimeText.innerText = `Pickup Time: ${taskPickupTime}`;
-  taskAssignedToText.innerText = `Assigned To: ${taskAssignedTo}`; // Display assigned to value
+  taskAssignedToText.innerText = `Assigned To: ${taskAssignedTo}`;
+  taskNotsText.innerText = `Notes: ${taskNots}`; // Display notes value
   modalBackdrop.style.display = 'flex';
 }
 
@@ -115,7 +120,7 @@ function loadTasksFromLocalStorage() {
     taskElement.innerHTML = `
       <span>${task.text}</span>
       <button class="delete-btn" onclick="deleteTask(event)">Delete</button>
-      <button class="details-btn" onclick="openTaskModal(event, '${task.text}', '${task.location}', '${task.dateTime}', '${task.transportation}', '${task.pickupTime}', '${task.assignedTo}')">Details</button>
+      <button class="details-btn" onclick="openTaskModal(event, '${task.text}', '${task.location}', '${task.dateTime}', '${task.transportation}', '${task.pickupTime}', '${task.assignedTo}', '${task.notes}')">Details</button>
     `;
     taskList.appendChild(taskElement);
   }
