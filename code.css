@@ -232,6 +232,7 @@ nav ul li a {
 }
 
 #app {
+color: #fff;
   width: 800px;
   margin: auto;
   margin-top: 150px;
@@ -239,6 +240,7 @@ nav ul li a {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  margin-right: 550px;
 }
 
 .task {
