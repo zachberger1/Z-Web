@@ -2,7 +2,7 @@
 body {
   position: fixed;
   height: 100%;
-
+  background-image: url(assets/img/BI.jpg);
   background-size: cover;
   /* Cover the entire background */
   background-repeat: no-repeat;
@@ -140,6 +140,7 @@ footer {
 }
 
 #app {
+
   width: 800px;
   margin: 150px auto;
   /* Center horizontally and set top margin */
@@ -147,6 +148,7 @@ footer {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+
 }
 
 .task {
@@ -187,12 +189,12 @@ span {
 
 .backgroundimg {
 
-  margin-top: 54%;
+  margin-top: 46%;
   width: 100%;
 }
 
-.backgroundimga {
-  top: 0;
-  margin-top: 54%;
+.backgroundimg1{
+
+
   width: 100%;
 }
