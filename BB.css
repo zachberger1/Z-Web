@@ -2,7 +2,7 @@
 body {
   position: fixed;
   height: 100%;
-  background-image: url(assets/img/BI.jpg) ;
+
   background-size: cover;
   /* Cover the entire background */
   background-repeat: no-repeat;
@@ -184,8 +184,15 @@ h1 {
 span {
   color: #fff;
 }
-.backgroundimg{
 
-  margin-top: 50%;
+.backgroundimg {
+
+  margin-top: 54%;
+  width: 100%;
+}
+
+.backgroundimga {
+  top: 0;
+  margin-top: 54%;
   width: 100%;
 }
