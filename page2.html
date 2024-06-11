@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Contact List</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="Z-Logo.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <img src="Berger.png" alt="Logo" class="logo">
+        <nav>
+            <a class="nav-btn" onclick="navigateTo('index.html')">Task Manager</a>
+            <a class="nav-btn" onclick="navigateTo('page1.html')">Website List</a>
+            <a class="nav-btn" onclick="navigateTo('page2.html')">Friends</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Friends Contact List</h1>
+        <button class="add-btn" onclick="openContactModal()">Add Friend</button>
+        <div id="contactList"></div>
+    </main>
+    
+    <div class="backdrop" id="addContactBackdrop">
+        <div class="modal" id="addContactModal">
+            <div class="input-group">
+                <label for="friendNameInput">Name:</label>
+                <input type="text" id="friendNameInput" />
+            </div>
+            <div class="input-group">
+                <label for="friendPhoneInput">Phone Number:</label>
+                <input type="text" id="friendPhoneInput" />
+            </div>
+            <button class="close-btn" onclick="closeContactModal()">Close</button>
+            <button class="add-btn" onclick="addContact()">Add</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
