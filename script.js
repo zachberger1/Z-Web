@@ -9,12 +9,12 @@ function openModal() {
 function closeAddTaskModal() {
   document.getElementById('addTaskBackdrop').style.display = 'none';
   document.getElementById('taskInput').value = '';
-    document.getElementById('taskLocationInput').value = '';
-    document.getElementById('taskDateTimeInput').value = '';
-    document.getElementById('taskTransportationInput').value = '';
-    document.getElementById('taskPickupTimeInput').value = '';
-    document.getElementById('taskAssignedToInput').value = '';
-    document.getElementById('taskNotsInput').value = '';
+  document.getElementById('taskLocationInput').value = '';
+  document.getElementById('taskDateTimeInput').value = '';
+  document.getElementById('taskTransportationInput').value = '';
+  document.getElementById('taskPickupTimeInput').value = '';
+  document.getElementById('taskAssignedToInput').value = '';
+  document.getElementById('taskNotsInput').value = '';
 }
 
 // Close all modals
@@ -23,12 +23,12 @@ function closeModals() {
   document.getElementById('addTaskBackdrop').style.display = 'none';
 
   document.getElementById('taskInput').value = '';
-    document.getElementById('taskLocationInput').value = '';
-    document.getElementById('taskDateTimeInput').value = '';
-    document.getElementById('taskTransportationInput').value = '';
-    document.getElementById('taskPickupTimeInput').value = '';
-    document.getElementById('taskAssignedToInput').value = '';
-    document.getElementById('taskNotsInput').value = '';
+  document.getElementById('taskLocationInput').value = '';
+  document.getElementById('taskDateTimeInput').value = '';
+  document.getElementById('taskTransportationInput').value = '';
+  document.getElementById('taskPickupTimeInput').value = '';
+  document.getElementById('taskAssignedToInput').value = '';
+  document.getElementById('taskNotsInput').value = '';
 }
 
 // Add a task to the task list and save to local storage
@@ -40,6 +40,8 @@ function addTask() {
   const pickupTime = document.getElementById('taskPickupTimeInput').value;
   const assignedTo = document.getElementById('taskAssignedToInput').value;
   const notes = document.getElementById('taskNotsInput').value;
+  const linkName = document.getElementById('taskLinkNameInput').value;
+  const linkURL = document.getElementById('taskLinkURLInput').value;
 
   document.getElementById('taskInput').value = '';
   document.getElementById('taskLocationInput').value = '';
@@ -48,6 +50,8 @@ function addTask() {
   document.getElementById('taskPickupTimeInput').value = '';
   document.getElementById('taskAssignedToInput').value = '';
   document.getElementById('taskNotsInput').value = '';
+  document.getElementById('taskLinkNameInput').value = '';
+  document.getElementById('taskLinkURLInput').value = '';
 
   const taskItem = {
     task,
@@ -56,7 +60,9 @@ function addTask() {
     transportation,
     pickupTime,
     assignedTo,
-    notes
+    notes,
+    linkName,
+    linkURL
   };
 
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -68,19 +74,21 @@ function addTask() {
 }
 
 // Append a task to the DOM
-function appendTaskToDOM(taskItem) {
+function appendTaskToDOM(taskItem, index) {
   const taskList = document.getElementById('taskList');
 
   const taskElement = document.createElement('div');
   taskElement.className = 'task-item';
+  console.log(taskItem)
   taskElement.innerHTML = `
-      <h3>${taskItem.task}</h3>
-      <button class="view-details-btn" onclick="viewTaskDetails('${taskItem.task}', '${taskItem.location}', '${taskItem.dateTime}', '${taskItem.transportation}', '${taskItem.pickupTime}', '${taskItem.assignedTo}', '${taskItem.notes}')">View Details</button> 
-
+      <h2>${taskItem.task}</h2>
+      <button class="view-details-btn" onclick="viewTaskDetails('${taskItem.task}', '${taskItem.location}', '${taskItem.dateTime}', '${taskItem.transportation}', '${taskItem.pickupTime}', '${taskItem.assignedTo}', '${taskItem.notes}', '${taskItem.linkName}', '${taskItem.linkURL}')">View Details</button>
+      <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
   `;
 
   taskList.appendChild(taskElement);
 }
+
 
 function deleteTask(index) {
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -93,7 +101,7 @@ function deleteTask(index) {
 }
 
 // View task details in a modal
-function viewTaskDetails(task, location, dateTime, transportation, pickupTime, assignedTo, notes) {
+function viewTaskDetails(task, location, dateTime, transportation, pickupTime, assignedTo, notes, linkName, linkURL) {
   document.getElementById('taskModalText').innerText = ` ${task}`;
   document.getElementById('taskLocationText').innerText = `Location: ${location}`;
   document.getElementById('taskDateTimeText').innerText = `Date and Time: ${dateTime}`;
@@ -101,24 +109,19 @@ function viewTaskDetails(task, location, dateTime, transportation, pickupTime, a
   document.getElementById('taskPickupTimeText').innerText = `Pickup Time: ${pickupTime}`;
   document.getElementById('taskAssignedToText').innerText = `Assigned To: ${assignedTo}`;
   document.getElementById('taskNotsText').innerText = `Notes: ${notes}`;
+  document.getElementById('taskLinkText').innerHTML = `<a href="${linkURL}" target="_blank">${linkName}</a>`;
+
+  if (linkName && linkURL) {
+    document.getElementById('taskLinkText').innerHTML = `<a href="${linkURL}" target="_blank">${linkName}</a>`;
+  } else {
+    document.getElementById('taskLinkText').innerHTML = '';
+  }
 
   document.getElementById('modalBackdrop').style.display = 'block';
 }
 
-// Load tasks from local storage and display them
-function appendTaskToDOM(taskItem, index) {
-  const taskList = document.getElementById('taskList');
 
-  const taskElement = document.createElement('div');
-  taskElement.className = 'task-item';
-  taskElement.innerHTML = `
-      <h2>${taskItem.task}</h2>
-      <button class="view-details-btn" onclick="viewTaskDetails('${taskItem.task}', '${taskItem.location}', '${taskItem.dateTime}', '${taskItem.transportation}', '${taskItem.pickupTime}', '${taskItem.assignedTo}', '${taskItem.notes}')">View Details</button>
-      <button class="delete-btn" onclick="deleteTask(${index})">Delete</button>
-  `;
 
-  taskList.appendChild(taskElement);
-}
 
 
 // Load tasks from local storage and display them
@@ -128,7 +131,7 @@ function loadTasks() {
 }
 
 // Load tasks from local storage when the page loads
-window.onload = function() {
+window.onload = function () {
   loadTasks();
 };
 
@@ -143,17 +146,17 @@ function closeContactModal() {
   document.getElementById('friendPhoneInput').value = '';
 }
 
-function openContactModal(){
+function openContactModal() {
   document.getElementById('addContactBackdrop').style.display = 'flex';
 }
 document.addEventListener('DOMContentLoaded', () => {
   const contactList = document.getElementById('contactList');
 
   // Open the modal to add a contact
-  
+
 
   // Close the modal to add a contact
-  
+
 
   // Load contacts from local storage
   function loadContacts() {
@@ -177,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     contactList.appendChild(contactItem);
   }
-  
+
   // Add a contact to the contact list and save to local storage
   window.addContact = function () {
     const name = document.getElementById('friendNameInput').value;

@@ -28,7 +28,7 @@
         <div class="modal" id="addTaskModal">
             <div class="input-group">
                 <label for="taskInput">Task:</label>
-                <input type="text" id="taskInput" />
+                <input type="text" id="taskInput" required />
             </div>
             <section class="colom">
                 <div class="input-group">
@@ -42,6 +42,14 @@
                 <div class="input-group">
                     <label for="taskTransportationInput">Transportation:</label>
                     <input type="text" id="taskTransportationInput" />
+                </div>
+                <div class="input-group">
+                    <label for="taskLinkNameInput">Link Name:</label>
+                    <input type="text" id="taskLinkNameInput" />
+                </div>
+                <div class="input-group">
+                    <label for="taskLinkInput">Link:</label>
+                    <input type="url" id="taskLinkURLInput" />
                 </div>
             </section>
             <section class="colom">
@@ -67,13 +75,13 @@
         <div class="modal" id="taskModal">
             <h1 id="taskModalText"></h1>
             <div class="details">
-                
                 <p id="taskLocationText"></p>
                 <p id="taskDateTimeText"></p>
                 <p id="taskTransportationText"></p>
                 <p id="taskPickupTimeText"></p>
                 <p id="taskAssignedToText"></p>
                 <p id="taskNotsText"></p>
+                <p id="taskLinkText"></p>
                 <button class="close-btn" onclick="closeModals()">Close</button>
             </div>
         </div>
@@ -81,5 +89,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>

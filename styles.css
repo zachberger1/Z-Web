@@ -312,3 +312,12 @@ input::placeholder {
   width: 20px; /* Adjust size as needed */
   height: 20px; /* Adjust size as needed */
 }
+
+#taskLinkText a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+#taskLinkText a:hover {
+  text-decoration: underline;
+}
